@@ -1,4 +1,2 @@
-/bin/
-/config/
-/data/
-/logs/
+/data/*
+/logs/*
