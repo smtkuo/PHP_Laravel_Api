@@ -6,6 +6,7 @@ use App\Http\Requests\PostFormRequest;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -29,6 +30,14 @@ class PostController extends Controller
      */
     public function store(PostFormRequest $request)
     {
+
+
+        if(!Auth::user()){
+            return response(
+                ["error"=>"Please login or Signup"]
+            );
+        }
+
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description ?? null,
@@ -56,6 +65,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        if(!Auth::user()){
+            return response(
+                ["error"=>"Please login or Signup"]
+            );
+        }
 
         $post = new Post;
         $getPost = $post->where("id",$id);
