@@ -45,13 +45,6 @@ Route::resource('subscribe',SubscribeMailController::class)->only([
     'store'
 ]);
 
-// TestMail
-Route::get('test/email', function(){
-	$send_mail = 'smtkuo@gmail.com';
-    dispatch(new App\Jobs\SubscribeMail($send_mail));
-    dd('OK');
-});
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
