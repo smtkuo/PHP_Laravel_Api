@@ -30,14 +30,11 @@ class PostController extends Controller
      */
     public function store(PostFormRequest $request)
     {
-
-
         if(!Auth::user()){
             return response(
                 ["error"=>"Please login or Signup"]
             );
         }
-
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description ?? null,

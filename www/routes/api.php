@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\SubscribeMailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,18 @@ Route::resource('images',ImagesController::class)->only([
 Route::resource('stats',StatsController::class)->only([
     'index'
 ]);
+
+// SubscribeMail
+Route::resource('subscribe',SubscribeMailController::class)->only([
+    'store'
+]);
+
+// TestMail
+Route::get('test/email', function(){
+	$send_mail = 'smtkuo@gmail.com';
+    dispatch(new App\Jobs\SubscribeMail($send_mail));
+    dd('OK');
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
