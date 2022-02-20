@@ -3,16 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
-use App\Models\Stats;
-use App\Models\Categoriables;
 
-class Post extends Model
+class Images extends Model
 {
     use HasFactory;
-    protected $table = 'posts';
+    protected $table = 'images';
     protected $fillable = [
         'title','slug','description','image','content','is_active'
     ];
@@ -34,15 +30,9 @@ class Post extends Model
     {
         return $this->hasOne(Categoriables::class);
     }
-
+    
     public function categoriable()
     {
         return $this->morphedByMany(Categoriables::class, 'categoriable');
     }
-
-    public function addViews()
-    {
-        return $this->morphedByMany(Categoriables::class, 'categoriable');
-    }
-
 }

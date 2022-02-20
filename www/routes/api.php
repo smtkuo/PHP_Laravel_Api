@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\StatsController;
 
 /*
@@ -21,10 +22,16 @@ use App\Http\Controllers\StatsController;
 Route::resource('posts',PostController::class)->only([
     'index', 'show',  'store', 'update', 'destroy'
 ]);
+Route::get('/posts/{postId}/{relationship}', [PostController::class, 'viewRelationship']);
 
 // Category
 Route::resource('category',CategoryController::class)->only([
-    'store', 'update', 'destroy'
+    'index', 'show',  'store', 'update', 'destroy'
+]);
+
+// Images
+Route::resource('images',ImagesController::class)->only([
+    'index', 'show',  'store', 'update', 'destroy'
 ]);
 
 // Stats

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Categoriables;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -13,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return response(
+            (new Category)->with('posts')->get()
+        );
     }
 
     /**
@@ -24,7 +28,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response(
+            Category::firstOrCreate(
+                ["title"=>$request->title],
+                [ 'title' => $request->title ?? null, 'description' => $request->description ?? null, 'content' => $request->content ?? null, 'is_active' => 1 ]
+            )
+        );
     }
 
     /**
@@ -35,7 +44,15 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::where("id",$id);
+        if($category == null){
+            return response(
+                ["error" => "Post is not active or deleted"]
+            );
+        }
+        return response(
+            $category->with('posts')->first()
+        );
     }
 
     /**
@@ -47,7 +64,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response(
+            Category::where("id",$id)->update(["title" => $request->title ?? null, "description" => $request->description ?? null, "content" => $request->content ?? null, "is_active" => $request->is_active ?? 0])
+        );
     }
 
     /**
@@ -58,6 +77,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Category::where("id",$id)->delete();
     }
 }

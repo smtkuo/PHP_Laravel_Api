@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categoriables', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->json('body');
-            $table->integer('post_id');
-            $table->integer('images_id');
-            $table->morphs('categoriable');
+            $table->string("title");
+            $table->string("slug");
+            $table->string("description")->nullable();
+            $table->string("content")->nullable();
+            $table->boolean("is_active");
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoriables');
+        Schema::dropIfExists('images');
     }
 };

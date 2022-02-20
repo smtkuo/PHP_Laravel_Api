@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Requests\PostFormRequest;
-use App\Models\Post;
 use App\Models\Category;
-use App\Models\Categoriables;
+use App\Models\Images;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class ImagesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         return response(
-            (new Post)->with('categories')->get()
+            (new Images)->with('categories')->get()
         );
     }
 
@@ -30,7 +28,7 @@ class PostController extends Controller
      */
     public function store(PostFormRequest $request)
     {
-        $post = Post::create([
+        $image = Images::create([
             'title' => $request->title,
             'description' => $request->description ?? null,
             'content' => $request->content ?? null,
@@ -41,11 +39,11 @@ class PostController extends Controller
             ["title" => $request->category],
             ["title" => $request->category, "description" => $request->description, "content" => $request->content, "is_active" => 1]
         );
-        $post->categoriable()->save($categoryAdd);
+        $image->categoriable()->save($categoryAdd);
 
 
         return response(
-            $post
+            $image
         );
     }
 
@@ -57,39 +55,17 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::where("id",$id);
-        if($post == null){
+        $image = Images::where("id",$id);
+        if($image == null){
             return response(
                 ["error" => "Post is not active or deleted"]
             );
         }
         return response(
-            $post->with('category')->first()
+            $image->with('category')->first()
         );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function viewRelationship($id,$relationship)
-    {
-        $post = Post::where("id",$id);
-        if($post){
-            if(method_exists($post,$relationship)){
-                $post = $post->$relationship()->first();
-            }
-        }
-        if($post==null){
-            $post = ["error" => "Post is not active"];
-        }
-        return response(
-            $post
-        );
-    }
-    
     /**
      * Update the specified resource in storage.
      *
@@ -100,7 +76,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         return response(
-            Post::where("id",$id)->update(["title" => $request->title, "description" => $request->description, "content" => $request->content, "is_active" => $request->is_active ?? 0])
+            Images::where("id",$id)->update(["title" => $request->title, "description" => $request->description, "content" => $request->content, "is_active" => $request->is_active ?? 0])
         );
     }
 
@@ -112,6 +88,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        Post::where("id",$id)->delete();
+        Images::where("id",$id)->delete();
     }
 }

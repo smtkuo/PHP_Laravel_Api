@@ -12,12 +12,13 @@ class Category extends Model
         'title','slug','description','image','content','is_active'
     ];
 
+    public function posts()
+    {
+        return $this->hasMany(Categoriables::class, 'categoriable_id')->where("categoriable_type", "categoriables");
+    }
 
-    /**
-     * Get all of the posts that are assigned this category.
-     */
     public function post()
     {
-        return $this->morphedByMany(Post::class, 'categoriable');
+        return $this->hasOne(Categoriables::class, 'categoriable_id')->where("categoriable_type", "categoriables");
     }
 }

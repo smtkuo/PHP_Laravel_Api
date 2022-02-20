@@ -11,4 +11,5 @@ class Categoriables extends Model
     protected $fillable = [
         'category_id','categoriable_id','categoriable_type'
     ];
+    
 }
