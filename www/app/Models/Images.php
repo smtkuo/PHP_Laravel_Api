@@ -35,4 +35,9 @@ class Images extends Model
     {
         return $this->morphedByMany(Categoriables::class, 'categoriable');
     }
+
+    public function statsModel()
+    {
+        return $this->hasOne(Stats::class, 'image_id', 'id');
+    }
 }

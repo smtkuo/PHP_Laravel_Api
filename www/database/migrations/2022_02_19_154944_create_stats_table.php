@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('stats', function (Blueprint $table) {
             $table->id();
-            $table->integer("post_id");
-            $table->bigInteger("views");
+            $table->integer("post_id")->default(0);
+            $table->integer("image_id")->default(0);
+            $table->bigInteger("views")->nullable();
             $table->timestamps();
         });
     }

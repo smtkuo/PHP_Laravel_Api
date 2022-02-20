@@ -40,9 +40,9 @@ class Post extends Model
         return $this->morphedByMany(Categoriables::class, 'categoriable');
     }
 
-    public function addViews()
+    public function stats()
     {
-        return $this->morphedByMany(Categoriables::class, 'categoriable');
+        return $this->hasOne(Stats::class, 'post_id', 'id');
     }
 
 }

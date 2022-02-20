@@ -61,6 +61,19 @@ class ImagesController extends Controller
                 ["error" => "Post is not active or deleted"]
             );
         }
+
+        $stats = $image->first()->statsModel()->first();
+        if($stats){
+            $image->first()->statsModel()->update(
+                ["image_id"=>$id, "views"=> $image->first()->statsModel()->first()->newVisit()]
+            );
+        }else{
+            $image->first()->statsModel()->create(
+                ["image_id"=>$id, "views"=> 1]
+            );
+        }
+
+
         return response(
             $image->with('category')->first()
         );

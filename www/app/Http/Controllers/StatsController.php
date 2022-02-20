@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Images;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Stats;
 
 class StatsController extends Controller
 {
@@ -13,7 +16,17 @@ class StatsController extends Controller
      */
     public function index()
     {
-        //
+        $stats = new Stats;
+        $posts = new Post;
+        $images = new Images;
+
+        return response(
+            [
+                "total_posts" => $posts->get()->count(),
+                "total_images" => $images->get()->count(),
+                "total_views" => collect($stats->get())->sum("views")
+            ]
+        );
     }
 
     /**

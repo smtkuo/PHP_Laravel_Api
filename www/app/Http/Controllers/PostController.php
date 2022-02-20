@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostFormRequest;
 use App\Models\Post;
 use App\Models\Category;
-use App\Models\Categoriables;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -57,14 +56,30 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::where("id",$id);
-        if($post == null){
+
+        $post = new Post;
+        $getPost = $post->where("id",$id);
+        if($getPost == null){
             return response(
                 ["error" => "Post is not active or deleted"]
             );
         }
+
+        
+        $stats = $getPost->first()->stats()->first();
+        if($stats){
+            $getPost->first()->stats()->update(
+                ["post_id"=>$id, "views"=> $getPost->first()->stats()->first()->newVisit()]
+            );
+        }else{
+            $getPost->first()->stats()->create(
+                ["post_id"=>$id, "views"=> 1]
+            );
+        }
+
+
         return response(
-            $post->with('category')->first()
+            $getPost->with('category')->first()
         );
     }
 
@@ -76,7 +91,8 @@ class PostController extends Controller
      */
     public function viewRelationship($id,$relationship)
     {
-        $post = Post::where("id",$id);
+        $post = new Post;
+        $post = $post->where("id",$id)->first();
         if($post){
             if(method_exists($post,$relationship)){
                 $post = $post->$relationship()->first();
